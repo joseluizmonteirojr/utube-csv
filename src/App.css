@@ -4,7 +4,7 @@ div.app {
   background-color: #282c34;
   width: 100vw;
   height: 100vh;
-  overflow-y: auto;
+  overflow: none;
   justify-content: center;
   align-items: center;
   color: aliceblue;
@@ -46,6 +46,7 @@ div.app button:focus-visible {
 div.app dl {
   width: 70vw;
   min-width: 890px;
+  overflow: auto;
 }
 
 div.app dd.row {
