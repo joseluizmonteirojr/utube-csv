@@ -1,4 +1,4 @@
-.App {
+/* .App {
   text-align: center;
 }
 
@@ -35,4 +35,88 @@
   to {
     transform: rotate(360deg);
   }
+}
+
+ */
+
+div.app {
+  display: flex;
+  flex-direction: column;
+  background-color: #282c34;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  justify-content: center;
+  align-items: center;
+  color: aliceblue;
+}
+
+div.app p {
+  background-color: #333539;
+  color: red;
+  text-align: center;
+  padding: 4px;
+}
+
+div.app input {
+  width: 50%;
+  height: 30px;
+  margin: 0 auto 20px auto;
+  background-color: #333539;
+  border: none;
+  text-align: center;
+  padding: 4px;
+  color: aliceblue;
+}
+
+div.app button {
+  width: 300px;
+  height: 45px;
+  background: #8c8c8c;
+  border: none;
+  color: #000000;
+  font-weight: bold;
+  cursor: pointer;
+  margin-bottom: 100px;
+}
+
+div.app button:focus-visible {
+  outline: none;
+}
+
+div.app dl {
+  width: 70vw;
+  min-width: 890px;
+}
+
+div.app dd.row {
+  display: flex;
+  background-color: #333539;
+  margin: 15px;
+  border-radius: 20px;
+}
+
+div.app dd.row img {
+  padding: 10px;
+  border-radius: 20px;
+}
+
+div.app dd.row > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 20px;
+}
+
+div.app dd.row > div a {
+  color: #39a9c8;
+  text-decoration: none
+}
+
+div.app dd.row > div a:first-of-type {
+  font-weight: 600;
+}
+
+div.app dd.row > div a:last-of-type {
+  font-weight: 300;
 }
