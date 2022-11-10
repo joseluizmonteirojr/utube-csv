@@ -17,7 +17,6 @@ function App() {
   const [error, setError] = useState({message: "Please inform the playlist ID"});
 
   const loadMore = useCallback(async (pageToken, previous) => {
-    console.log(videos, csvData);
     const response = await fetch(`${YOUTUBE_PLAYLISTS_ITEMS_API}?part=snippet&maxResults=50&playlistId=${playlistId}&key=${process.env.REACT_APP_YOUTUBE_API_KEY}&pageToken=${pageToken}`);
     const processed = await response.json();
     const items = [...previous, ...processed.items];
@@ -46,9 +45,9 @@ function App() {
 
   useEffect(() => {
     setCsvData(videos.map(video => ({
-      videoName: video.snippet.title,
-      channelName: video.snippet.videoOwnerChannelTitle,
-      videoLink:`https://www.youtube.com/watch?v=${video.snippet.resourceId.videoId}`
+      videoName: video?.snippet?.title,
+      channelName: video?.snippet?.videoOwnerChannelTitle,
+      videoLink: video?.snippet?.resourceId?.videoId && `https://www.youtube.com/watch?v=${video?.snippet?.resourceId?.videoId}`
     })));
   }, [videos]);
 
@@ -78,27 +77,27 @@ function App() {
                 <>
                   <dd className="row">
                     <img
-                    src={video.snippet.thumbnails.medium.url}
-                    width={video.snippet.thumbnails.medium.width}
-                    height={video.snippet.thumbnails.medium.height}
+                    src={video?.snippet?.thumbnails?.medium?.url}
+                    width={video?.snippet?.thumbnails?.medium?.width}
+                    height={video?.snippet?.thumbnails?.medium?.height}
                     alt="video-logo" />
                     <div>
                       <h1>
                         <a
-                          href={`https://www.youtube.com/channel/${video.snippet.videoOwnerChannelId}`}
+                          href={`https://www.youtube.com/channel/${video?.snippet?.videoOwnerChannelId}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           >
-                            {video.snippet.videoOwnerChannelTitle}
+                            {video?.snippet?.videoOwnerChannelTitle}
                         </a>
                       </h1>
                       <h2>
                         <a
-                          href={`https://www.youtube.com/watch?v=${video.snippet.resourceId.videoId}`}
+                          href={`https://www.youtube.com/watch?v=${video?.snippet?.resourceId?.videoId}`}
                           target="_blank"
                           rel="noopener noreferrer"
                           >
-                          {video.snippet.title}
+                          {video?.snippet?.title}
                         </a>
                       </h2>
                     </div>
