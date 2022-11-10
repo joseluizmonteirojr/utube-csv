@@ -12,34 +12,45 @@ const YOUTUBE_PLAYLISTS_ITEMS_API = "https://www.googleapis.com/youtube/v3/playl
 
 function App() {
   const [playlistId, setPlaylistId] = useState('');
-  //PLUCb45311vj1GvzFpgbyzKCG3gELl3nf9
-  //PLrVhyUnEQMV_DOSqhiyQNo9RdJYbeCLVP
   const [videos, setVideos] = useState([]);
   const [csvData, setCsvData] = useState([]);
   const [error, setError] = useState({message: "Please inform the playlist ID"});
 
+  const loadMore = useCallback(async (pageToken, previous) => {
+    console.log(videos, csvData);
+    const response = await fetch(`${YOUTUBE_PLAYLISTS_ITEMS_API}?part=snippet&maxResults=50&playlistId=${playlistId}&key=${process.env.REACT_APP_YOUTUBE_API_KEY}&pageToken=${pageToken}`);
+    const processed = await response.json();
+    const items = [...previous, ...processed.items];
+    setVideos(items);
+    setError(null);
+    if (processed.nextPageToken) loadMore(processed.nextPageToken, items);
+  }, [playlistId]);
+
   const getItems = useCallback(async() => {
     try {
-      const response = await fetch(`${YOUTUBE_PLAYLISTS_ITEMS_API}?part=snippet&playlistId=${playlistId}&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`);
+      const response = await fetch(`${YOUTUBE_PLAYLISTS_ITEMS_API}?part=snippet&maxResults=50&playlistId=${playlistId}&key=${process.env.REACT_APP_YOUTUBE_API_KEY}`);
       const processed = await response.json();
-      console.log(processed.error);
       if (processed.error) {
         setError(processed.error);
         setVideos([]);
         setCsvData([]);
       } else {
         setVideos(processed.items);
-        setCsvData(processed.items.map(video => ({
-          videoName: video.snippet.title,
-          channelName: video.snippet.videoOwnerChannelTitle,
-          videoLink:`https://www.youtube.com/watch?v=${video.snippet.resourceId.videoId}`
-        })));
         setError(null);
+        if (processed.nextPageToken) loadMore(processed.nextPageToken, processed.items);
       }
     } catch(error) {
       console.error(error);
     }
   }, [playlistId]);
+
+  useEffect(() => {
+    setCsvData(videos.map(video => ({
+      videoName: video.snippet.title,
+      channelName: video.snippet.videoOwnerChannelTitle,
+      videoLink:`https://www.youtube.com/watch?v=${video.snippet.resourceId.videoId}`
+    })));
+  }, [videos]);
 
   useEffect(() => {
     if (playlistId) {
